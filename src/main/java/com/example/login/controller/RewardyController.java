@@ -1,6 +1,7 @@
 package com.example.login.controller;
 
 
+import com.example.login.dto.WorkMemberDto;
 import com.example.login.entity.WorkMember;
 import com.example.login.service.WorkMemberService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,7 @@ public class RewardyController {
     // 유저 정보 가져오기
     @GetMapping("/api/user")
     @ResponseBody
-    public List<WorkMember> fetchApiUser() {
-
-        return workMemberService.getAllUser();
+    public List<WorkMemberDto> fetchApiUser() {
+        return workMemberService.getAllUserDto();
     }
 }
