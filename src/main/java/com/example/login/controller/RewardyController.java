@@ -16,6 +16,7 @@ import java.util.List;
 @Controller
 public class RewardyController {
 
+    // 서비스 가져오기
     private final WorkMemberService workMemberService;
 
     // 유저 정보 가져오기
