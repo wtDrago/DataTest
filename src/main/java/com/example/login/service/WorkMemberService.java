@@ -40,6 +40,7 @@ public class WorkMemberService {
                 user.getState(),
                 user.getEmail(),
                 user.getName(),
+                user.getPassWord(),
                 user.getCompany(),
                 user.getPart(),
                 user.getProfileType(),

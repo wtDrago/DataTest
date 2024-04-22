@@ -4,22 +4,17 @@ package com.example.login.controller;
 import com.example.login.dto.WorkMemberDto;
 import com.example.login.dto.WorkMemberProfileImgDto;
 import com.example.login.dto.WorkTeamDto;
-import com.example.login.entity.WorkMember;
-import com.example.login.entity.WorkTeam;
 import com.example.login.service.WorkMemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
-public class RewardyController {
+public class TeamController {
 
     // 서비스 가져오기
     private final WorkMemberService workMemberService;
@@ -35,7 +30,7 @@ public class RewardyController {
     public List<WorkTeamDto> fetchApiTeam() {
         return workMemberService.getAllTeamDto();
     }
-    @GetMapping("/api/team")
+    @GetMapping("/api/user-profile")
     @ResponseBody
     public List<WorkMemberProfileImgDto> fetchApiUserProfile() {
         return workMemberService.getAllUserProfileDto();

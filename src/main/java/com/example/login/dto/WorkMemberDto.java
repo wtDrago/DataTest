@@ -3,6 +3,7 @@ package com.example.login.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @Setter
@@ -11,6 +12,7 @@ public class WorkMemberDto {
     private Integer state;
     private String email;
     private String name;
+    private String password;
     private String company;
     private String part;
     private Integer profileType;
@@ -22,13 +24,14 @@ public class WorkMemberDto {
     private String zipCode;
     private String phone;
 
-    public WorkMemberDto(Integer idx, Integer state, String email, String name, String company, String part,
+    public WorkMemberDto(Integer idx, Integer state, String email, String name, String password, String company, String part,
                          Integer profileType, Integer grade, Integer coin, String birthDay, String addr1,
                          String addr2, String zipCode, String phone) {
         this.idx = idx;
         this.state = state;
         this.email = email;
         this.name = name;
+        this.password = password;
         this.company = company;
         this.part = part;
         this.profileType = profileType;
