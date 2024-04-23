@@ -33,6 +33,7 @@ public class WorkDataLogDto {
     private Date regDate;
     private Date readDate;
 
+
     public WorkDataLogDto(int idx, byte state, int code, int workIdx, int linkIdx,
                           byte companyNo, String email, String name, String sendEmail,
                           String sendName, int coin, String memo, Integer workCnt, String workFlag,

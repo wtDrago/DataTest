@@ -1,9 +1,6 @@
 package com.example.login.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +23,7 @@ public class WorkMemberProfileImg {
     private Integer companyNo;
     @Column(name = "resize", nullable = false)
     private Integer reSize;
-    private Integer email;
+    private String  email;
     @Column(name = "file_path", nullable = false)
     private String filePath;
     @Column(name = "file_name", nullable = false)
@@ -49,5 +46,7 @@ public class WorkMemberProfileImg {
     @Column(name = "regdate", nullable = false)
     private LocalDateTime regDate;
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "email", referencedColumnName = "email", insertable = false, updatable = false)
+    private WorkMember workMember;
 }

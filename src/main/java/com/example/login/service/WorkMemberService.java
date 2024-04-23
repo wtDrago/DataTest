@@ -32,14 +32,25 @@ public class WorkMemberService {
     private final WorkDataLogRepository workDataLogRepository;
 
     public List<WorkMemberDto> getAllUserDto() {
-        List<WorkMember> user = userRepository.findByState(0);
-        return user.stream()
-                .map(this::convertToDto)
+        List<WorkMember> users = userRepository.findByState(0);
+
+        return users.stream()
+                .map(user -> {
+                    WorkMemberDto dto = convertToDto(user);
+                    List<WorkMemberProfileImg> profileImages = user.getProfileImages();
+                    if (profileImages != null && !profileImages.isEmpty()) {
+                        // 여러 개의 이미지 중 원하는 데이터를 가져와서 dto에 추가
+                        WorkMemberProfileImg profileImg = profileImages.get(0);
+                        dto.setFileName(profileImg.getFileName());
+                        dto.setFilePath(profileImg.getFilePath());
+                    }
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
     //회원 Dto
     private WorkMemberDto convertToDto(WorkMember user) {
-        return new WorkMemberDto(
+         return new WorkMemberDto(
                 user.getIdx(),
                 user.getState(),
                 user.getEmail(),
@@ -48,15 +59,16 @@ public class WorkMemberService {
                 user.getCompany(),
                 user.getPart(),
                 user.getProfileType(),
-                user.getGrade(),
-                user.getCoin(),
-                user.getBirthDay(),
-                user.getAddr1(),
-                user.getAddr2(),
-                user.getZipCode(),
-                user.getPhone()
+//                user.getGrade(),
+                user.getCoin()
+//                user.getBirthDay(),
+//                user.getAddr1(),
+//                user.getAddr2(),
+//                user.getZipCode(),
+//                user.getPhone()
                 // Add other fields as needed
         );
+
     }
 
 

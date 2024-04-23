@@ -12,7 +12,7 @@ public class WorkMemberProfileImgDto {
     private Integer memIdx;
     private Integer companyNo;
     private Integer reSize;
-    private Integer email;
+    private String  email;
     private String filePath;
     private String fileName;
     private Integer fileSize;
@@ -20,7 +20,7 @@ public class WorkMemberProfileImgDto {
     private Integer typeFlag;
     private String ip;
 
-    public WorkMemberProfileImgDto(Integer idx, Integer state, Integer memIdx, Integer companyNo, Integer reSize, Integer email,
+    public WorkMemberProfileImgDto(Integer idx, Integer state, Integer memIdx, Integer companyNo, Integer reSize, String email,
                                    String filePath, String fileName, String fileType, Integer typeFlag, String ip){
         this.idx = idx;
         this.state = state;

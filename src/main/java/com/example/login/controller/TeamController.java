@@ -2,6 +2,7 @@ package com.example.login.controller;
 
 
 import com.example.login.dto.*;
+import com.example.login.entity.WorkMember;
 import com.example.login.service.WorkMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,8 +28,21 @@ public class TeamController {
     // 유저 정보 가져오기
     @GetMapping("/team/user")
 
-    public List<WorkMemberDto> fetchApiUser() {
-        return workMemberService.getAllUserDto();
+    public ResponseEntity<Map<String, Object>> fetchApiUser() {
+        Map<String , Object> response = new LinkedHashMap<>();
+
+        try {
+            List<WorkMemberDto> users = workMemberService.getAllUserDto();
+            response.put("result", "success");
+            response.put("msg", "");
+            response.put("data", users);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("result", "error");
+            response.put("msg", e.getMessage());
+            response.put("data", Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 //    @GetMapping("/team/team")
 //    public List<WorkTeamDto> fetchApiTeam() {
