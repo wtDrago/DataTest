@@ -88,8 +88,8 @@ public class BrochureService {
 
 
     // 브로슈어 활용사례
-    public List<BroSampleDto> getAllBroSampleDto() {
-        List<BroSample> broSample = broSampleRepository.findByState(1);
+    public List<BroSampleDto> getAllBroSampleDto(String search) {
+        List<BroSample> broSample = broSampleRepository.findByStateAndTitleContaining(1, search);
         return broSample.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());

@@ -56,6 +56,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/", "/join").permitAll()
                         .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/team/**").permitAll()
                         .anyRequest().authenticated());
 
         //AuthenticationManager()와 JWTUtil 인수 전달

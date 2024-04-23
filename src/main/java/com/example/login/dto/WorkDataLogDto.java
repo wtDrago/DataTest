@@ -22,7 +22,7 @@ public class WorkDataLogDto {
     private String sendName;
     private int coin;
     private String memo;
-    private int workCount;
+    private Integer workCnt;
     private String workFlag;
     private String kindFlag;
     private byte readFlag;
@@ -35,7 +35,7 @@ public class WorkDataLogDto {
 
     public WorkDataLogDto(int idx, byte state, int code, int workIdx, int linkIdx,
                           byte companyNo, String email, String name, String sendEmail,
-                          String sendName, int coin, String memo, int workCount, String workFlag,
+                          String sendName, int coin, String memo, Integer workCnt, String workFlag,
                           String kindFlag, byte readFlag, byte typeFlag, String ip, String workDate,
                           Date editDate, Date regDate, Date readDate){
 
@@ -51,7 +51,7 @@ public class WorkDataLogDto {
         this.sendName = sendName;
         this.coin = coin;
         this.memo = memo;
-        this.workCount = workCount;
+        this.workCnt = workCnt;
         this.workFlag = workFlag;
         this.kindFlag = kindFlag;
         this.readFlag = readFlag;

@@ -8,5 +8,5 @@ import java.util.List;
 
 
 public interface BroSampleRepository extends JpaRepository<BroSample, Integer> {
-    List<BroSample> findByState(int state);
+    List<BroSample> findByStateAndTitleContaining(int state, String search);
 }

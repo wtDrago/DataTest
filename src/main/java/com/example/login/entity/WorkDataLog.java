@@ -55,7 +55,7 @@ public class WorkDataLog {
     private String memo;
 
     @Column(name = "work_cnt")
-    private int workCount;
+    private Integer workCnt;
 
     @Column(name = "work_flag")
     private String workFlag;

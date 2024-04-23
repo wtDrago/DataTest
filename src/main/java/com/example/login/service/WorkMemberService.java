@@ -1,12 +1,15 @@
 package com.example.login.service;
 
 
+import com.example.login.dto.WorkDataLogDto;
 import com.example.login.dto.WorkMemberDto;
 import com.example.login.dto.WorkMemberProfileImgDto;
 import com.example.login.dto.WorkTeamDto;
+import com.example.login.entity.WorkDataLog;
 import com.example.login.entity.WorkMember;
 import com.example.login.entity.WorkMemberProfileImg;
 import com.example.login.entity.WorkTeam;
+import com.example.login.repository.WorkDataLogRepository;
 import com.example.login.repository.WorkMemberProfileImgRepository;
 import com.example.login.repository.WorkTeamRepository;
 import jakarta.transaction.Transactional;
@@ -26,6 +29,7 @@ public class WorkMemberService {
     private final UserRepository userRepository;
     private final WorkTeamRepository workTeamRepository;
     private final WorkMemberProfileImgRepository workMemberProfileImgRepository;
+    private final WorkDataLogRepository workDataLogRepository;
 
     public List<WorkMemberDto> getAllUserDto() {
         List<WorkMember> user = userRepository.findByState(0);
@@ -94,6 +98,41 @@ public class WorkMemberService {
                 workMemberProfileImg.getFileType(),
                 workMemberProfileImg.getTypeFlag(),
                 workMemberProfileImg.getIp()
+        );
+    }
+
+    // 메인페이지 타임라인
+    public List<WorkDataLogDto> getAllTeamTimeline(String email) {
+        List<WorkDataLog> timeLine = workDataLogRepository.findByStateAndWorkDateAndEmail(0, email);
+        return timeLine.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+    //팀 Dto
+    private WorkDataLogDto convertToDto(WorkDataLog workDataLog) {
+        return new WorkDataLogDto(
+                workDataLog.getIdx(),
+                workDataLog.getState(),
+                workDataLog.getCode(),
+                workDataLog.getWorkIdx(),
+                workDataLog.getLinkIdx(),
+                workDataLog.getCompanyNo(),
+                workDataLog.getEmail(),
+                workDataLog.getName(),
+                workDataLog.getSendEmail(),
+                workDataLog.getSendName(),
+                workDataLog.getCoin(),
+                workDataLog.getMemo(),
+                workDataLog.getWorkCnt(),
+                workDataLog.getWorkFlag(),
+                workDataLog.getKindFlag(),
+                workDataLog.getReadFlag(),
+                workDataLog.getTypeFlag(),
+                workDataLog.getIp(),
+                workDataLog.getWorkDate(),
+                workDataLog.getEditDate(),
+                workDataLog.getRegDate(),
+                workDataLog.getReadDate()
         );
     }
 }

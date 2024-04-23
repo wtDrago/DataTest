@@ -134,10 +134,12 @@ public class BrochureController {
     }
     // 브로슈어 활용사례
     @GetMapping("/api/bro-sample")
-    public ResponseEntity<Map<String, Object>> fetchApiBroSample() {
+    public ResponseEntity<Map<String, Object>> fetchApiBroSample(
+            @RequestParam(name = "search", defaultValue = "") String search
+    ) {
         Map<String, Object> response = new HashMap<>();
         try {
-            List<BroSampleDto> samples = brochureService.getAllBroSampleDto();
+            List<BroSampleDto> samples = brochureService.getAllBroSampleDto(search);
             response.put("result", "success");
             response.put("msg", "");
             response.put("data", samples);
