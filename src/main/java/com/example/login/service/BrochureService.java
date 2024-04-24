@@ -7,8 +7,6 @@ import com.example.login.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -87,7 +85,7 @@ public class BrochureService {
     }
 
 
-    // 브로슈어 활용사례
+    // 브로슈어 활용사례(리스트)
     public List<BroSampleDto> getAllBroSampleDto(String search) {
         List<BroSample> broSample = broSampleRepository.findByStateAndTitleContaining(1, search);
         return broSample.stream()
@@ -97,16 +95,28 @@ public class BrochureService {
     private BroSampleDto convertToDto(BroSample broSample) {
         return new BroSampleDto(
                 broSample.getIdx(),
-                broSample.getState(),
                 broSample.getCategory(),
                 broSample.getService(),
-                broSample.getEmail(),
-                broSample.getCompanyNo(),
+                broSample.getTitle(),
+                broSample.getRegData()
+        );
+    }
+
+    // 브로슈어 활용사례(디테일)
+    public List<BroSampleDetailDto> getAllBroSampleDetailDto(int idx) {
+        List<BroSample> broSampleDetail = broSampleRepository.findByStateAndIdx(1, idx);
+        return broSampleDetail.stream()
+                .map(this::convertToDetailDto)
+                .collect(Collectors.toList());
+    }
+
+    private BroSampleDetailDto convertToDetailDto(BroSample broSample) {
+        return new BroSampleDetailDto(
+                broSample.getIdx(),
+                broSample.getService(),
                 broSample.getTitle(),
                 broSample.getContents(),
-                broSample.getEditData(),
-                broSample.getRegData(),
-                broSample.getPageCount()
+                broSample.getRegData()
         );
     }
 

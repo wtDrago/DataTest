@@ -22,7 +22,7 @@ public class BroSample {
     private Integer idx;
 
     private Integer state;
-    private String category;
+    private Integer category;
     private String service;
     private String email;
     @Column(name = "companyno", nullable = false)

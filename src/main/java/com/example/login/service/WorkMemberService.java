@@ -35,9 +35,10 @@ public class WorkMemberService {
         List<WorkMember> users = userRepository.findByState(0);
 
         return users.stream()
-                .map(user -> {
-                    WorkMemberDto dto = convertToDto(user);
-                    List<WorkMemberProfileImg> profileImages = user.getProfileImages();
+                // 맵안의 스트림에서 각각의 데이터를 처리하기위해 member를 사용
+                .map(member -> {
+                    WorkMemberDto dto = convertToDto(member);
+                    List<WorkMemberProfileImg> profileImages = member.getProfileImages();
                     if (profileImages != null && !profileImages.isEmpty()) {
                         // 여러 개의 이미지 중 원하는 데이터를 가져와서 dto에 추가
                         WorkMemberProfileImg profileImg = profileImages.get(0);

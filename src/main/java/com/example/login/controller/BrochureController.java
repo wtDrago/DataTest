@@ -133,7 +133,25 @@ public class BrochureController {
         }
     }
     // 브로슈어 활용사례
-    @GetMapping("/api/bro-sample")
+//    @GetMapping("/api/bro-sample-detail")
+//    public ResponseEntity<Map<String, Object>> fetchApiBroSample(
+//            @RequestParam(name = "search", defaultValue = "") String search
+//    ) {
+//        Map<String, Object> response = new HashMap<>();
+//        try {
+//            List<BroSampleDto> samples = brochureService.getAllBroSampleDto(search);
+//            response.put("result", "success");
+//            response.put("msg", "");
+//            response.put("data", samples);
+//            return ResponseEntity.ok(response);
+//        } catch (Exception e) {
+//            response.put("result", "error");
+//            response.put("msg", e.getMessage());
+//            response.put("data", Collections.emptyList());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//        }
+//    }
+    @GetMapping("/api/bro-sample-list")
     public ResponseEntity<Map<String, Object>> fetchApiBroSample(
             @RequestParam(name = "search", defaultValue = "") String search
     ) {
@@ -143,6 +161,24 @@ public class BrochureController {
             response.put("result", "success");
             response.put("msg", "");
             response.put("data", samples);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("result", "error");
+            response.put("msg", e.getMessage());
+            response.put("data", Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    @GetMapping("/api/bro-sample-detail")
+    public ResponseEntity<Map<String, Object>> fetchApiBroSampleDetail(
+            @RequestParam(name = "idx", defaultValue = "") int idx
+    ) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<BroSampleDetailDto> sampleDetails = brochureService.getAllBroSampleDetailDto(idx);
+            response.put("result", "success");
+            response.put("msg", "");
+            response.put("data", sampleDetails);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("result", "error");
