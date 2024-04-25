@@ -11,7 +11,7 @@ import java.util.Date;
 @Setter
 public class WorkDataLogDto {
     private int idx;
-    private byte state;
+//    private byte state;
     private int code;
     private int workIdx;
     private int linkIdx;
@@ -22,26 +22,25 @@ public class WorkDataLogDto {
     private String sendName;
     private int coin;
     private String memo;
-    private Integer workCnt;
-    private String workFlag;
-    private String kindFlag;
-    private byte readFlag;
-    private byte typeFlag;
-    private String ip;
+//    private Integer workCnt;
+//    private String workFlag;
+//    private String kindFlag;
+//    private byte readFlag;
+//    private byte typeFlag;
+//    private String ip;
     private String workDate;
-    private Date editDate;
-    private Date regDate;
-    private Date readDate;
+//    private Date editDate;
+//    private Date regDate;
+//    private Date readDate;
 
 
-    public WorkDataLogDto(int idx, byte state, int code, int workIdx, int linkIdx,
+    public WorkDataLogDto(int idx, int code, int workIdx, int linkIdx,
                           byte companyNo, String email, String name, String sendEmail,
-                          String sendName, int coin, String memo, Integer workCnt, String workFlag,
-                          String kindFlag, byte readFlag, byte typeFlag, String ip, String workDate,
-                          Date editDate, Date regDate, Date readDate){
+                          String sendName, int coin, String memo, String workDate
+                          ){
 
         this.idx = idx;
-        this.state = state;
+//        this.state = state;
         this.code = code;
         this.workIdx = workIdx;
         this.linkIdx = linkIdx;
@@ -52,15 +51,15 @@ public class WorkDataLogDto {
         this.sendName = sendName;
         this.coin = coin;
         this.memo = memo;
-        this.workCnt = workCnt;
-        this.workFlag = workFlag;
-        this.kindFlag = kindFlag;
-        this.readFlag = readFlag;
-        this.typeFlag = typeFlag;
-        this.ip = ip;
+//        this.workCnt = workCnt;
+//        this.workFlag = workFlag;
+//        this.kindFlag = kindFlag;
+//        this.readFlag = readFlag;
+//        this.typeFlag = typeFlag;
+//        this.ip = ip;
         this.workDate = workDate;
-        this.editDate = editDate;
-        this.regDate = regDate;
-        this.readDate = readDate;
+//        this.editDate = editDate;
+//        this.regDate = regDate;
+//        this.readDate = readDate;
     }
 }

@@ -44,14 +44,6 @@ public class TeamController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-//    @GetMapping("/team/team")
-//    public List<WorkTeamDto> fetchApiTeam() {
-//        return workMemberService.getAllTeamDto();
-//    }
-    @GetMapping("/team/user-profile")
-    public List<WorkMemberProfileImgDto> fetchApiUserProfile() {
-        return workMemberService.getAllUserProfileDto();
-    }
 
     // 타임라인
     @GetMapping("/team/timeline")

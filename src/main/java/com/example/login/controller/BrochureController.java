@@ -132,25 +132,7 @@ public class BrochureController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    // 브로슈어 활용사례
-//    @GetMapping("/api/bro-sample-detail")
-//    public ResponseEntity<Map<String, Object>> fetchApiBroSample(
-//            @RequestParam(name = "search", defaultValue = "") String search
-//    ) {
-//        Map<String, Object> response = new HashMap<>();
-//        try {
-//            List<BroSampleDto> samples = brochureService.getAllBroSampleDto(search);
-//            response.put("result", "success");
-//            response.put("msg", "");
-//            response.put("data", samples);
-//            return ResponseEntity.ok(response);
-//        } catch (Exception e) {
-//            response.put("result", "error");
-//            response.put("msg", e.getMessage());
-//            response.put("data", Collections.emptyList());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-//        }
-//    }
+    // 브로슈어 활용사례(리스트)
     @GetMapping("/api/bro-sample-list")
     public ResponseEntity<Map<String, Object>> fetchApiBroSample(
             @RequestParam(name = "search", defaultValue = "") String search
@@ -169,6 +151,8 @@ public class BrochureController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    // 브로슈어 활용사례(디테일)
     @GetMapping("/api/bro-sample-detail")
     public ResponseEntity<Map<String, Object>> fetchApiBroSampleDetail(
             @RequestParam(name = "idx", defaultValue = "") int idx

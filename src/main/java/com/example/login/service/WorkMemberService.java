@@ -125,7 +125,6 @@ public class WorkMemberService {
     private WorkDataLogDto convertToDto(WorkDataLog workDataLog) {
         return new WorkDataLogDto(
                 workDataLog.getIdx(),
-                workDataLog.getState(),
                 workDataLog.getCode(),
                 workDataLog.getWorkIdx(),
                 workDataLog.getLinkIdx(),
@@ -136,16 +135,7 @@ public class WorkMemberService {
                 workDataLog.getSendName(),
                 workDataLog.getCoin(),
                 workDataLog.getMemo(),
-                workDataLog.getWorkCnt(),
-                workDataLog.getWorkFlag(),
-                workDataLog.getKindFlag(),
-                workDataLog.getReadFlag(),
-                workDataLog.getTypeFlag(),
-                workDataLog.getIp(),
-                workDataLog.getWorkDate(),
-                workDataLog.getEditDate(),
-                workDataLog.getRegDate(),
-                workDataLog.getReadDate()
+                workDataLog.getWorkDate()
         );
     }
 }
