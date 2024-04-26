@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -158,11 +159,39 @@ public class BrochureController {
             @RequestParam(name = "idx", defaultValue = "") int idx
     ) {
         Map<String, Object> response = new HashMap<>();
+
         try {
+            Map<String, Object> dataMap = new LinkedHashMap<>();
+            List<Map<String, Object>> listData = new ArrayList<>();
+            List<Map<String, Object>> pageData = new ArrayList<>();
             List<BroSampleDetailDto> sampleDetails = brochureService.getAllBroSampleDetailDto(idx);
+
+            for (BroSampleDetailDto detail : sampleDetails) {
+                Map<String, Object> detailMap = new LinkedHashMap<>();
+
+                if (detail.getIdx() == idx) {
+                    listData.add(detailMap); // idx가 4일 경우 List에 저장
+                    detailMap.put("idx", detail.getIdx());
+                    detailMap.put("title", detail.getTitle());
+                    detailMap.put("service", detail.getService());
+                    detailMap.put("contents", detail.getContents());
+                } else {
+                    pageData.add(detailMap); // 그 외의 경우에는 Page에 저장
+                    detailMap.put("idx", detail.getIdx());
+                    detailMap.put("title", detail.getTitle());
+                    if(detail.getIdx() > idx){
+                        detailMap.put("step", "next");
+                    }else if(detail.getIdx() < idx){
+                        detailMap.put("step", "prev");
+                    }
+                }
+            }
+            dataMap.put("List", listData);
+            dataMap.put("Page", pageData);
+
             response.put("result", "success");
             response.put("msg", "");
-            response.put("data", sampleDetails);
+            response.put("data", dataMap);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("result", "error");

@@ -1,22 +1,13 @@
 package com.example.login.service;
 
 
-import com.example.login.dto.WorkDataLogDto;
-import com.example.login.dto.WorkMemberDto;
-import com.example.login.dto.WorkMemberProfileImgDto;
-import com.example.login.dto.WorkTeamDto;
-import com.example.login.entity.WorkDataLog;
-import com.example.login.entity.WorkMember;
-import com.example.login.entity.WorkMemberProfileImg;
-import com.example.login.entity.WorkTeam;
-import com.example.login.repository.WorkDataLogRepository;
-import com.example.login.repository.WorkMemberProfileImgRepository;
-import com.example.login.repository.WorkTeamRepository;
+import com.example.login.dto.*;
+import com.example.login.entity.*;
+import com.example.login.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.login.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +21,7 @@ public class WorkMemberService {
     private final WorkTeamRepository workTeamRepository;
     private final WorkMemberProfileImgRepository workMemberProfileImgRepository;
     private final WorkDataLogRepository workDataLogRepository;
+//    private final WorkCpRewardListRepository workCpRewardListRepository;
 
     public List<WorkMemberDto> getAllUserDto() {
         List<WorkMember> users = userRepository.findByState(0);
@@ -138,4 +130,28 @@ public class WorkMemberService {
                 workDataLog.getWorkDate()
         );
     }
+
+    // 메인페이지 능력
+//    public List<WorkCpRewardListDto> getAllTeamAbility(String email) {
+//        List<WorkCpRewardList> cpList = workCpRewardListRepository.findByStateAndEmail(0, email);
+//        Integer sumType1 = workCpRewardListRepository.sumType1();
+//        Integer sumType2 = workCpRewardListRepository.sumType2();
+//        Integer sumType3 = workCpRewardListRepository.sumType3();
+//        Integer sumType4 = workCpRewardListRepository.sumType4();
+//        Integer sumType5 = workCpRewardListRepository.sumType5();
+//        Integer sumType6 = workCpRewardListRepository.sumType6();
+//        Integer totalSum = sumType1 + sumType2 + sumType3 + sumType4 + sumType5 + sumType6;
+//
+//        return cpList.stream()
+//                .map(this::convertToDto)
+//                .collect(Collectors.toList());
+//    }
+//    //팀 Dto
+//    private WorkCpRewardListDto convertToDto(WorkCpRewardList workCpRewardList) {
+//        return new WorkCpRewardListDto(
+//                workCpRewardList.getIdx(),
+//                workCpRewardList.getEmail(),
+//                workCpRewardList.getName()
+//        );
+//    }
 }
