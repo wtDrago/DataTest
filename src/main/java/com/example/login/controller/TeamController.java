@@ -63,24 +63,24 @@ public class TeamController {
         }
     }
 
-//    @GetMapping("/team/ability")
-//    public ResponseEntity<Map<String, Object>> fetchTeamAbility(
-//            @RequestParam(name="email", defaultValue = "") String email
-//    ) {
-//
-//        Map<String , Object> response = new LinkedHashMap<>();
-//
-//        try {
-//            List<WorkCpRewardListDto> abilitys = workMemberService.getAllTeamAbility(email);
-//            response.put("result", "success");
-//            response.put("msg", "");
-//            response.put("data", abilitys);
-//            return ResponseEntity.ok(response);
-//        } catch (Exception e) {
-//            response.put("result", "error");
-//            response.put("msg", e.getMessage());
-//            response.put("data", Collections.emptyList());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-//        }
-//    }
+    @GetMapping("/team/ability")
+    public ResponseEntity<Map<String, Object>> fetchTeamAbility(
+            @RequestParam(name="email", defaultValue = "") String email
+    ) {
+
+        Map<String , Object> response = new LinkedHashMap<>();
+
+        try {
+            List<WorkCpRewardListDto> abilitys = workMemberService.getAllTeamAbility(email);
+            response.put("result", "success");
+            response.put("msg", "");
+            response.put("data", abilitys);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("result", "error");
+            response.put("msg", e.getMessage());
+            response.put("data", Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }

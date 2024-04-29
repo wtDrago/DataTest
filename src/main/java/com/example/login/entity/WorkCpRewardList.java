@@ -18,7 +18,9 @@ public class WorkCpRewardList {
     private String email;
     private String name;
     private Integer companyno;
+    @Column(name = "work_idx")
     private Long workIdx;
+    @Column(name = "link_idx")
     private Long linkIdx;
     private String service;
     private String act;

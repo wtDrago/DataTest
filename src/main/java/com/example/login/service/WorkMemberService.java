@@ -8,6 +8,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +23,7 @@ public class WorkMemberService {
     private final WorkTeamRepository workTeamRepository;
     private final WorkMemberProfileImgRepository workMemberProfileImgRepository;
     private final WorkDataLogRepository workDataLogRepository;
-//    private final WorkCpRewardListRepository workCpRewardListRepository;
+    private final WorkCpRewardListRepository workCpRewardListRepository;
 
     public List<WorkMemberDto> getAllUserDto() {
         List<WorkMember> users = userRepository.findByState(0);
@@ -106,6 +110,7 @@ public class WorkMemberService {
 
     // 메인페이지 타임라인
     public List<WorkDataLogDto> getAllTeamTimeline(String email) {
+
         List<WorkDataLog> timeLine = workDataLogRepository.findByStateAndWorkDateAndEmail(0, email);
         return timeLine.stream()
                 .map(this::convertToDto)
@@ -130,24 +135,90 @@ public class WorkMemberService {
     }
 
     // 메인페이지 능력
-//    public List<WorkCpRewardListDto> getAllTeamAbility(String email) {
-//        List<WorkCpRewardList> cpList = workCpRewardListRepository.findByStateAndEmail(0, email);
-//        Integer sumType1 = workCpRewardListRepository.sumType1();
-//        Integer sumType2 = workCpRewardListRepository.sumType2();
-//        Integer sumType3 = workCpRewardListRepository.sumType3();
-//        Integer sumType4 = workCpRewardListRepository.sumType4();
-//        Integer sumType5 = workCpRewardListRepository.sumType5();
-//        Integer sumType6 = workCpRewardListRepository.sumType6();
-//        Integer totalSum = sumType1 + sumType2 + sumType3 + sumType4 + sumType5 + sumType6;
-//
-//        return cpList.stream()
-//                .map(this::convertToDto)
-//                .collect(Collectors.toList());
-//    }
-//    //팀 Dto
+    public List<WorkCpRewardListDto> getAllTeamAbility(String email) {
+
+        List<Object[]> sums = workCpRewardListRepository.sumTypeByStateAndEmailAndDate(0, email, getFirstDateOfMonth(), getLastDateOfMonth());
+
+        int[] maxValues = {96, 88, 116, 171, 110, 149};
+
+        List<WorkCpRewardListDto> dtos = new ArrayList<>();
+        WorkCpRewardListDto dto = null;
+        for (Object[] sum : sums) {
+            // 각 항목 추출
+            Integer[] sumTypes = new Integer[6];
+            //각 항목 합계 저장
+            Integer[] sumTypeResult = new Integer[6];
+            sumTypes[0] = (Integer) sum[0];
+            sumTypes[1] = (Integer) sum[1];
+            sumTypes[2] = (Integer) sum[2];
+            sumTypes[3] = (Integer) sum[3];
+            sumTypes[4] = (Integer) sum[4];
+            sumTypes[5] = (Integer) sum[5];
+
+            int totalType = 0;
+            String[] avility = new String[6];
+            for (int i = 0; i < sumTypes.length; i++) {
+                // Adjust sumType if it exceeds max value
+                // 랭크점수
+                totalType += sumTypes[i];
+
+                if (sumTypes[i] > maxValues[i]) {
+                    sumTypes[i] = maxValues[i];
+                }
+                sumTypeResult[i] =  Math.round(((float) sumTypes[i] / maxValues[i]) * 100);
+
+
+                if(sumTypeResult[i] >= 71 && sumTypeResult[i] <= 100){
+                    avility[i]  = "S";
+                }else if(sumTypeResult[i] >= 51 && sumTypeResult[i] <= 70){
+                    avility[i] = "A";
+                }else if(sumTypeResult[i] >= 31 && sumTypeResult[i] <= 50){
+                    avility[i] = "B";
+                }else if(sumTypeResult[i] >= 11 && sumTypeResult[i] <= 30){
+                    avility[i] = "C";
+                }else if(sumTypeResult[i] >= 5 && sumTypeResult[i] <= 10){
+                    avility[i] = "D";
+                }else{
+                    avility[i] = "E";
+                }
+            }
+
+            //소수점 계산(소수점 랭크 점수)
+            double[] resultTypes = new double[6];
+            for (int i = 0; i < resultTypes.length; i++) {
+                resultTypes[i] = Math.round(((float) sumTypes[i] / maxValues[i]) * 5 * 10.0) / 10.0;
+                System.out.println(sumTypes[i]);
+            }
+
+            dto = new WorkCpRewardListDto(avility[0], resultTypes[0], avility[1], resultTypes[1],
+                    avility[2], resultTypes[2], avility[3], resultTypes[3],
+                    avility[4], resultTypes[4], avility[5], resultTypes[5],
+                    totalType);
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+    private String getFirstDateOfMonth() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate firstDateOfMonth = currentDate.withDayOfMonth(1);
+        return firstDateOfMonth.format(DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    private String getLastDateOfMonth() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate lastDateOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
+        return lastDateOfMonth.format(DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    //팀 Dto
 //    private WorkCpRewardListDto convertToDto(WorkCpRewardList workCpRewardList) {
 //        return new WorkCpRewardListDto(
-//                workCpRewardList.getIdx(),
+//                workCpRewardList.getType1(),
+//                workCpRewardList.getType2(),
+//                workCpRewardList.getType3(),
+//                workCpRewardList.getType4(),
+//                workCpRewardList.getType5(),
+//                workCpRewardList.getType6(),
 //                workCpRewardList.getEmail(),
 //                workCpRewardList.getName()
 //        );

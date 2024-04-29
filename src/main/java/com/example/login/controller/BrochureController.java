@@ -166,7 +166,7 @@ public class BrochureController {
                 Map<String, Object> detailMap = new LinkedHashMap<>();
 
                 if (detail.getIdx() == idx) {
-                    listData.add(detailMap); // idx가 4일 경우 List에 저장
+                    listData.add(detailMap); // 쿼리스트링과 idx같으면 설정
                     detailMap.put("idx", detail.getIdx());
                     detailMap.put("title", detail.getTitle());
                     detailMap.put("service", detail.getService());
