@@ -1,6 +1,7 @@
 package com.example.login.dto;
 
 
+import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.Date;
@@ -8,9 +9,9 @@ import java.util.Date;
 @Getter
 @Setter
 public class WorkTodayWorkDto {
-    private int idx;
+    private Integer idx;
     private byte state;
-    private int companyNo;
+    private Integer companyNo;
     private byte highLevel;
     private byte dayFlag;
     private byte workFlag;
@@ -20,7 +21,7 @@ public class WorkTodayWorkDto {
     private byte fileFlag;
     private byte readFlag;
     private long repeatWorkIdx;
-    private int sort;
+    private Integer sort;
     private byte memoView;
     private byte contentsView;
     private int changeDate;
@@ -28,7 +29,7 @@ public class WorkTodayWorkDto {
     private byte secretFlag;
     private byte noticeFlag;
     private byte shareFlag;
-    private int workIdx;
+    private Integer workIdx;
     private String email;
     private String name;
     private String part;
@@ -44,16 +45,16 @@ public class WorkTodayWorkDto {
     private Date readDate;
     private Date editDate;
     private Date regDate;
-    private int partyLink;
-    private int partyIdx;
-    private int alarmFlag;
+    private Integer partyLink;
+    private Integer partyIdx;
+    private Integer alarmFlag;
     private Date alarmDate;
     public WorkTodayWorkDto(int idx, byte state, int companyNo, byte highLevel, byte dayFlag, byte workFlag, short partFlag,
                             byte typeFlag, byte repeatFlag, byte fileFlag, byte readFlag, long repeatWorkIdx, int sort,
                             byte memoView, byte contentsView, int changeDate, byte decideFlag, byte secretFlag, byte noticeFlag,
                             byte shareFlag, int workIdx, String email, String name, String part, String title, String contents,
                             String contents1, String reqDate, String workStartTime, String workEndTime, String memo, String ip,
-                            String workDate, Date readDate, Date editDate, Date regDate, int partyLink, int partyIdx,
+                            String workDate, Date readDate, Date editDate, Date regDate, Integer partyLink, int partyIdx,
                             int alarmFlag, Date alarmDate){
         this.idx = idx;
         this.state = state;

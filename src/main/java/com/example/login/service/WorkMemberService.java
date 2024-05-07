@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -24,7 +26,9 @@ public class WorkMemberService {
     private final WorkMemberProfileImgRepository workMemberProfileImgRepository;
     private final WorkDataLogRepository workDataLogRepository;
     private final WorkCpRewardListRepository workCpRewardListRepository;
-
+    private final TeamWorkCountRepository teamWorkCountRepository;
+    private final ChallengeCountRepository challengeCountRepository;
+    private final PartyCountRepository partyCountRepository;
     public List<WorkMemberDto> getAllUserDto() {
         List<WorkMember> users = userRepository.findByState(0);
 
@@ -66,48 +70,6 @@ public class WorkMemberService {
 
     }
 
-
-    public List<WorkTeamDto> getAllTeamDto() {
-        List<WorkTeam> team = workTeamRepository.findByState(0);
-        return team.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-    //팀 Dto
-    private WorkTeamDto convertToDto(WorkTeam team) {
-        return new WorkTeamDto(
-                team.getIdx(),
-                team.getState(),
-                team.getCompanyNo(),
-                team.getPartName(),
-                team.getMemo(),
-                team.getIp()
-        );
-    }
-
-    public List<WorkMemberProfileImgDto> getAllUserProfileDto() {
-        List<WorkMemberProfileImg> userProfile = workMemberProfileImgRepository.findByState(0);
-        return userProfile.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-    //팀 Dto
-    private WorkMemberProfileImgDto convertToDto(WorkMemberProfileImg workMemberProfileImg) {
-        return new WorkMemberProfileImgDto(
-                workMemberProfileImg.getIdx(),
-                workMemberProfileImg.getState(),
-                workMemberProfileImg.getMemIdx(),
-                workMemberProfileImg.getCompanyNo(),
-                workMemberProfileImg.getReSize(),
-                workMemberProfileImg.getEmail(),
-                workMemberProfileImg.getFilePath(),
-                workMemberProfileImg.getFileName(),
-                workMemberProfileImg.getFileType(),
-                workMemberProfileImg.getTypeFlag(),
-                workMemberProfileImg.getIp()
-        );
-    }
-
     // 메인페이지 타임라인
     public List<WorkDataLogDto> getAllTeamTimeline(String email) {
 
@@ -142,7 +104,7 @@ public class WorkMemberService {
         int[] maxValues = {96, 88, 116, 171, 110, 149};
 
         List<WorkCpRewardListDto> dtos = new ArrayList<>();
-        WorkCpRewardListDto dto = null;
+        WorkCpRewardListDto dto;
         for (Object[] sum : sums) {
             // 각 항목 추출
             Integer[] sumTypes = new Integer[6];
@@ -158,7 +120,6 @@ public class WorkMemberService {
             int totalType = 0;
             String[] avility = new String[6];
             for (int i = 0; i < sumTypes.length; i++) {
-                // Adjust sumType if it exceeds max value
                 // 랭크점수
                 totalType += sumTypes[i];
 
@@ -198,29 +159,118 @@ public class WorkMemberService {
         }
         return dtos;
     }
+
+    public List<TeamWorkCountDto> getAllTeamWorkCount(String email, Integer companyNo){
+        List<WorkTodayWork> works = teamWorkCountRepository.findByCompanyNoAndEmailAndWorkDate(companyNo, email, getTodayDate());
+        TeamWorkCountDto count = new TeamWorkCountDto(email, countWork(works), countNoWork(works), countReport(works), countRequest(works), countShare(works), countChallenge(email, Long.valueOf(companyNo)), countParty(email, Long.valueOf(companyNo)));
+
+        count.setEmail(email);
+        // 각 카운트를 계산하여 count 객체에 설정
+        count.setWork(countWork(works));
+        count.setNoWork(countNoWork(works));
+        count.setReport(countReport(works));
+        count.setRequest(countRequest(works));
+        count.setShare(countShare(works));
+        count.setChallenge(countChallenge(email, Long.valueOf(companyNo)));
+        count.setParty(countParty(email, Long.valueOf(companyNo)));
+
+        List<TeamWorkCountDto> countList = new ArrayList<>();
+        countList.add(count);
+
+        return countList;
+    }
+    private int countWork(List<WorkTodayWork> works){
+        int count = 0;
+        for (WorkTodayWork work : works) {
+            if (work.getWorkFlag() == 2 && work.getShareFlag() == 0 && work.getNoticeFlag() == 0 && work.getState() != 9) {
+                count++;
+            }
+        }
+        return count;
+
+    }
+    private int countNoWork(List<WorkTodayWork> works){
+        int count = 0;
+        for (WorkTodayWork work : works) {
+            if (work.getWorkFlag() == 2 && work.getShareFlag() == 0 && work.getNoticeFlag() == 0 && work.getState() == 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+    private int countReport(List<WorkTodayWork> works){
+        int count = 0;
+        for (WorkTodayWork work : works) {
+            if (work.getWorkFlag() == 1 && work.getWorkIdx() == null) {
+                count++;
+            }
+        }
+        return count;
+    }
+    private int countRequest(List<WorkTodayWork> works){
+        int count = 0;
+        for (WorkTodayWork work : works) {
+            if (work.getWorkFlag() == 3 && work.getWorkIdx() == null) {
+                count++;
+            }
+        }
+        return count;
+    }
+    private int countShare(List<WorkTodayWork> works){
+        int count = 0;
+        for (WorkTodayWork work : works) {
+            if (work.getShareFlag() == 1) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    // 챌린지 카운트
+    private int countChallenge(String email, Long companyNo){
+
+        List<WorkChallenges> challenges = challengeCountRepository.findByCompanyNoAndEmailAndStateAndCoachingChkAndViewFlagAndTempFlagAndTemplate(
+                companyNo, email, 0,0,0,0,0);
+
+        int count = 0;
+        for (WorkChallenges challenge : challenges){
+
+            // 문자열을 LocalDate로 변환
+            LocalDate challengeDate = LocalDate.parse(challenge.getEDate());
+            LocalDate todayDate = LocalDate.parse(getTodayDate());
+
+            long daysDifference = ChronoUnit.DAYS.between(challengeDate,todayDate);
+            if(daysDifference >= 0){
+                count++;
+            }
+        }
+        return count;
+    }
+    private int countParty(String email, Long companyNo){
+
+        List<WorkTodayWorkProject> partys = partyCountRepository.findByCompanyNoAndEmailAndState(companyNo, email, 0);
+
+        int count = 0;
+        for (WorkTodayWorkProject party : partys){
+                count++;
+        }
+        return count;
+    }
+    // 당일 날짜 구하기
+    private String getTodayDate() {
+        LocalDate currentDate = LocalDate.now();
+        return currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+    // 해당 월의 첫 날 구하기
     private String getFirstDateOfMonth() {
         LocalDate currentDate = LocalDate.now();
         LocalDate firstDateOfMonth = currentDate.withDayOfMonth(1);
         return firstDateOfMonth.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
-
+    // 해당 월의 마지막 날 구하기
     private String getLastDateOfMonth() {
         LocalDate currentDate = LocalDate.now();
         LocalDate lastDateOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
         return lastDateOfMonth.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
-
-    //팀 Dto
-//    private WorkCpRewardListDto convertToDto(WorkCpRewardList workCpRewardList) {
-//        return new WorkCpRewardListDto(
-//                workCpRewardList.getType1(),
-//                workCpRewardList.getType2(),
-//                workCpRewardList.getType3(),
-//                workCpRewardList.getType4(),
-//                workCpRewardList.getType5(),
-//                workCpRewardList.getType6(),
-//                workCpRewardList.getEmail(),
-//                workCpRewardList.getName()
-//        );
-//    }
 }

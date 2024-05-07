@@ -2,6 +2,7 @@ package com.example.login.controller;
 
 
 import com.example.login.dto.*;
+import com.example.login.repository.TeamWorkCountRepository;
 import com.example.login.service.WorkMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -71,12 +72,32 @@ public class TeamController {
         Map<String , Object> response = new LinkedHashMap<>();
 
         try {
-            List<WorkCpRewardListDto> abilitys = workMemberService.getAllTeamAbility(email);
+            List<WorkCpRewardListDto> ability = workMemberService.getAllTeamAbility(email);
             response.put("result", "success");
             response.put("msg", "");
-            response.put("data", abilitys);
+            response.put("data", ability);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            response.put("result", "error");
+            response.put("msg", e.getMessage());
+            response.put("data", Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/team/work-count")
+    public ResponseEntity<Map<String, Object>> fetchTeamWorkCount(
+            @RequestParam(name = "email", defaultValue = "") String email,
+            @RequestParam(name = "companyNo", defaultValue = "") Integer companyNo
+    ){
+        Map<String, Object> response = new LinkedHashMap<>();
+        try {
+            List<TeamWorkCountDto> counts = workMemberService.getAllTeamWorkCount(email, companyNo);
+            response.put("result", "success");
+            response.put("msg", "");
+            response.put("data", counts);
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
             response.put("result", "error");
             response.put("msg", e.getMessage());
             response.put("data", Collections.emptyList());

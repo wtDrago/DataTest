@@ -19,13 +19,13 @@ public class WorkTodayWork {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idx")
-    private int idx;
+    private Integer idx;
 
     @Column(name = "state")
     private byte state;
 
     @Column(name = "companyno")
-    private int companyNo;
+    private Integer companyNo;
 
     @Column(name = "highlevel")
     private byte highLevel;
@@ -52,10 +52,10 @@ public class WorkTodayWork {
     private byte readFlag;
 
     @Column(name = "repeat_work_idx")
-    private long repeatWorkIdx;
+    private Integer repeatWorkIdx;
 
     @Column(name = "sort")
-    private int sort;
+    private Integer sort;
 
     @Column(name = "memo_view")
     private byte memoView;
@@ -64,7 +64,7 @@ public class WorkTodayWork {
     private byte contentsView;
 
     @Column(name = "change_date")
-    private int changeDate;
+    private Integer changeDate;
 
     @Column(name = "decide_flag")
     private byte decideFlag;
@@ -79,7 +79,7 @@ public class WorkTodayWork {
     private byte shareFlag;
 
     @Column(name = "work_idx")
-    private int workIdx;
+    private Integer workIdx;
 
     @Column(name = "email")
     private String email;
@@ -130,13 +130,13 @@ public class WorkTodayWork {
     private Date regDate;
 
     @Column(name = "party_link")
-    private int partyLink;
+    private Integer partyLink;
 
     @Column(name = "party_idx")
-    private int partyIdx;
+    private Integer partyIdx;
 
     @Column(name = "alram_flag")
-    private int alarmFlag;
+    private Integer alarmFlag;
 
     @Column(name = "alram_date")
     @Temporal(TemporalType.TIMESTAMP)
